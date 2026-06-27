@@ -155,9 +155,22 @@ Invoke-RestMethod -Uri http://127.0.0.1:5000/tasks/3 -Method DELETE
 - **HTTP status codes are intentional, not decorative**: `201` is used only when a new resource is actually created, `200` for successful reads/updates/deletes, and `404` whenever a requested resource doesn't exist — matching real-world API conventions.
 - **No frontend**: this is a pure backend API, designed to be consumed by any client (browser, curl, Postman, another app, etc).
 
+## Input Validation
+
+`POST /tasks` and `PUT /tasks/<id>` require a `title` in the request body (and `PUT` also requires `done`). If a required field is missing, the API responds with a `400 Bad Request` instead of crashing.
+
+**Example — missing title:**
+```powershell
+Invoke-RestMethod -Uri http://127.0.0.1:5000/tasks -Method POST -ContentType "application/json" -Body '{"done": false}'
+```
+
+**Response — `400 Bad Request`**
+```json
+{ "error": "title is required" }
+```
+
 ## Possible Next Steps
 
 - Swap the in-memory list for a real database (SQLite via SQLAlchemy)
-- Add input validation (e.g. reject a `POST` with no `title`)
 - Add pagination for `GET /tasks`
 - Containerize with Docker for deployment
