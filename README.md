@@ -68,7 +68,7 @@ Invoke-RestMethod -Uri http://127.0.0.1:5000/tasks
 ]
 ```
 
----
+--
 
 ### `GET /tasks/<id>`
 Returns a single task matching the given ID.
